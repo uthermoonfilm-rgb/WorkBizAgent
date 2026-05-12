@@ -18,6 +18,7 @@ export interface Message {
 
 interface ChatInterfaceProps {
   onStateUpdate?: (state: Record<string, unknown>) => void
+  sendRef?: React.MutableRefObject<((msg: string) => void) | null>
 }
 
 const MORNING_STARTERS = [
@@ -46,7 +47,7 @@ function getTimeBasedStarters(): string[] {
   return EVENING_STARTERS
 }
 
-export function ChatInterface({ onStateUpdate }: ChatInterfaceProps) {
+export function ChatInterface({ onStateUpdate, sendRef }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -206,6 +207,11 @@ export function ChatInterface({ onStateUpdate }: ChatInterfaceProps) {
       setActiveTools([])
     }
   }, [input, isLoading, voiceOutputEnabled, speak, onStateUpdate])
+
+  // Expose sendMessage via ref for external callers (e.g. outreach quick-draft buttons)
+  useEffect(() => {
+    if (sendRef) sendRef.current = (msg: string) => sendMessage(msg)
+  }, [sendRef, sendMessage])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {

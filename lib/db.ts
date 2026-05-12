@@ -83,7 +83,40 @@ function initSchema(db: Database.Database) {
       started_at TEXT DEFAULT (datetime('now')),
       completed_at TEXT
     );
+
+    CREATE TABLE IF NOT EXISTS outreach_drafts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      type TEXT NOT NULL,
+      platform TEXT NOT NULL,
+      recipient TEXT,
+      recipient_handle TEXT,
+      subject TEXT,
+      body TEXT NOT NULL,
+      project TEXT,
+      status TEXT DEFAULT 'draft',
+      sent_at TEXT,
+      notes TEXT,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
   `)
+
+  // Seed project memories on first run
+  const memoryCount = (db.prepare('SELECT COUNT(*) as c FROM memories').get() as { c: number }).c
+  if (memoryCount === 0) {
+    const seedMem = db.prepare(`
+      INSERT INTO memories (type, content, tags, importance) VALUES (?, ?, ?, ?)
+    `)
+    const seedProjectMemories = db.transaction(() => {
+      seedMem.run('goal', 'PRIMARY PROJECT: The Voyagers — An album biopic series about Todd (dad) and his band in 1986 Boothbay Harbor, Maine. Each single is paired with a short film episode. Episode 2 is complete. Episodes 1, 3, 4, 5, and possibly 6 still need filming, extending into fall. HIGHEST PRIORITY.', JSON.stringify(['voyagers', 'project', 'film', 'music', 'priority']), 10)
+      seedMem.run('niche_insight', 'The Voyagers emotional core: Accepting yourself, believing in your art, doing it without fail. A love letter to making music and giving a damn about it. Todd is the central character. All band members have integral arcs. Episodes match the album sequence. Arc must feel whole — clear journey, beginning to end.', JSON.stringify(['voyagers', 'tone', 'theme', 'narrative']), 10)
+      seedMem.run('goal', 'SECONDARY PROJECT: Where We Fade — A techno album set in an original world where AI has taken over and banned natural human creativity and music. Timeline more fluid than Voyagers. Visuals: real iPhone footage blended with heavily stylized overlays — not pure 3D. Should feel like another world bleeding into this one.', JSON.stringify(['where-we-fade', 'project', 'techno', 'worldbuilding']), 9)
+      seedMem.run('niche_insight', 'Where We Fade tone: Eclectic techno — not fixed to one end of the spectrum. Promo spans all platforms; hero formats TBD. Worldbuilding not fully documented; moodboards and PDFs exist. Themes: rebellion through art, human creativity as resistance, dystopia felt from the inside.', JSON.stringify(['where-we-fade', 'tone', 'theme']), 9)
+      seedMem.run('strategy', '80/20 rule: 80% of time on creative work (Voyagers + Where We Fade). 20% on outreach — finding clients, collaborators, press, sponsors, labels. Goal is inbound — clients come to us. APEX drafts all outreach; operator just reviews, edits, and sends.', JSON.stringify(['strategy', 'outreach', '80/20', 'workflow']), 10)
+      seedMem.run('preference', 'Outreach targets: brands/sponsors, artists/collaborators, labels/distributors/festivals, press/blogs/playlists/curators. Draft emails and DMs ready to send — operator reviews and presses send.', JSON.stringify(['outreach', 'targets', 'email', 'dm']), 9)
+    })
+    seedProjectMemories()
+  }
 
   // Seed default gamification state
   const existing = db.prepare('SELECT value FROM gamification WHERE key = ?').get('xp')

@@ -123,6 +123,57 @@ export const APEX_TOOLS: Tool[] = [
     },
   },
   {
+    name: 'draft_outreach',
+    description: 'Draft a personalized outreach email or DM and save it to the send queue. Use this whenever the operator needs to contact someone — a brand, collaborator, press contact, label, curator, or potential client. Write it as the operator in first person. Be specific, direct, no fluff.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        type: {
+          type: 'string',
+          enum: ['cold_email', 'collaboration_pitch', 'press_pitch', 'label_submission', 'sponsor_pitch', 'instagram_dm', 'twitter_dm', 'linkedin_dm'],
+          description: 'Type of outreach',
+        },
+        platform: {
+          type: 'string',
+          enum: ['email', 'instagram', 'twitter', 'linkedin', 'other'],
+          description: 'Platform for delivery',
+        },
+        recipient: { type: 'string', description: 'Recipient name or company' },
+        recipient_handle: { type: 'string', description: 'Handle or email address if known' },
+        subject: { type: 'string', description: 'Email subject line (for emails)' },
+        body: { type: 'string', description: 'The full draft message body' },
+        project: {
+          type: 'string',
+          enum: ['voyagers', 'where_we_fade', 'both', 'general'],
+          description: 'Which project this outreach is for',
+        },
+        notes: { type: 'string', description: 'Internal notes about this outreach (not sent)' },
+      },
+      required: ['type', 'platform', 'body'],
+    },
+  },
+  {
+    name: 'get_outreach_drafts',
+    description: 'Retrieve outreach drafts from the send queue. Use this to show what\'s ready to send.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        status: {
+          type: 'string',
+          enum: ['draft', 'sent', 'archived'],
+          description: 'Filter by status',
+        },
+        project: {
+          type: 'string',
+          enum: ['voyagers', 'where_we_fade', 'both', 'general'],
+          description: 'Filter by project',
+        },
+        limit: { type: 'number', description: 'Max results', default: 10 },
+      },
+      required: [],
+    },
+  },
+  {
     name: 'add_to_plan',
     description: 'Add a planned action or task to the user\'s APEX plan. These are actions the assistant will work on during standby mode.',
     input_schema: {
@@ -276,6 +327,41 @@ export async function executeTool(name: string, input: Record<string, unknown>):
         : db.prepare(query).all()
 
       return JSON.stringify({ notes: rows, count: rows.length })
+    }
+
+    case 'draft_outreach': {
+      const db = getDb()
+      const result = db.prepare(`
+        INSERT INTO outreach_drafts (type, platform, recipient, recipient_handle, subject, body, project, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `).run(
+        input.type,
+        input.platform,
+        input.recipient ?? null,
+        input.recipient_handle ?? null,
+        input.subject ?? null,
+        input.body,
+        input.project ?? 'general',
+        input.notes ?? null
+      )
+      return JSON.stringify({
+        success: true,
+        draft_id: result.lastInsertRowid,
+        message: `Draft saved to send queue${input.recipient ? ` for ${input.recipient}` : ''}. Ready to review and send.`,
+      })
+    }
+
+    case 'get_outreach_drafts': {
+      const db = getDb()
+      const status = (input.status as string) ?? 'draft'
+      const project = input.project as string | undefined
+      const limit = (input.limit as number) ?? 10
+
+      const drafts = project
+        ? db.prepare('SELECT * FROM outreach_drafts WHERE status = ? AND project = ? ORDER BY created_at DESC LIMIT ?').all(status, project, limit)
+        : db.prepare('SELECT * FROM outreach_drafts WHERE status = ? ORDER BY created_at DESC LIMIT ?').all(status, limit)
+
+      return JSON.stringify({ drafts, count: drafts.length })
     }
 
     case 'add_to_plan': {
