@@ -6,7 +6,7 @@ import Database from 'better-sqlite3'
 import path from 'path'
 import fs from 'fs'
 
-const DB_DIR = path.join(process.cwd(), '.apex-data')
+const DB_DIR = process.env.APEX_DATA_DIR ?? path.join(process.cwd(), '.apex-data')
 const DB_PATH = path.join(DB_DIR, 'apex.db')
 
 if (!fs.existsSync(DB_DIR)) {
