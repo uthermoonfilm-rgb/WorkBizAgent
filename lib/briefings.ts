@@ -68,36 +68,40 @@ export function markBriefingDelivered(id: number): void {
   `).run(id)
 }
 
-export function generateBriefingContent(type: BriefingType, includeMissed = false): string {
+export function generateBriefingContent(type: BriefingType, missedCount = 0): string {
   const memories = getMemories(undefined, 10)
   const opps = getOpportunities(undefined, 5)
   const state = getState()
 
-  const now = new Date()
-  const greeting = type === 'morning'
-    ? `Good morning. Here's your ${includeMissed ? 'combined' : 'morning'} briefing.`
-    : `Good evening. Here's your ${includeMissed ? 'combined' : 'evening'} briefing.`
-
-  const recentMemories = memories.slice(0, 3).map(m => `• ${m.content}`).join('\n')
   const activeOpps = opps.filter(o => o.status === 'discovered' || o.status === 'pursuing')
+  const recentMemories = memories.slice(0, 3).map(m => `• ${m.content}`).join('\n')
   const oppSummary = activeOpps.length > 0
-    ? activeOpps.slice(0, 3).map(o => `• ${o.title} (${o.estimated_value})`).join('\n')
-    : 'No active opportunities in pipeline.'
+    ? activeOpps.slice(0, 3).map(o => `• **${o.title}** — ${o.estimated_value}`).join('\n')
+    : 'No active opportunities in the pipeline right now.'
 
-  const content = `${greeting}
+  // Conversational catch-up when briefings were missed
+  let opening = ''
+  if (missedCount >= 2) {
+    opening = `You missed the last ${missedCount} check-ins — no worries, let me get you up to speed on everything at once.\n\n`
+  } else if (missedCount === 1) {
+    opening = `You missed one check-in, so I've folded that in here. Here's where we stand:\n\n`
+  } else if (type === 'morning') {
+    opening = `Good morning. Here's your briefing.\n\n`
+  } else {
+    opening = `Good evening. Let's debrief the day.\n\n`
+  }
 
-**Progress**: Level ${state.level} ${state.rank} · ${state.total_wins} wins · ${state.win_streak} win streak
+  const content = `${opening}**Where you stand**: Level ${state.level} ${state.rank} · ${state.total_wins} wins · ${state.win_streak}-win streak
 
-**Active Pipeline** (${activeOpps.length} opportunities):
+**Active Pipeline** (${activeOpps.length} open):
 ${oppSummary}
 
-**Recent context**:
-${recentMemories || 'No recent memories saved yet.'}
+**Recent context I've stored**:
+${recentMemories || 'Nothing significant saved yet — talk to me and I\'ll start building your context.'}
 
-**Today's focus areas**:
 ${type === 'morning'
-  ? '1. Review opportunities and pick one to pursue\n2. Check your content/workout plans\n3. What are the top 3 things you want to accomplish today?'
-  : '1. What did you accomplish today?\n2. Any opportunities to update or close?\n3. What needs to carry over to tomorrow?'
+  ? `**For today**: Which of these opportunities do you want to move forward on? Anything in the gym or on the content side you want to lock in?`
+  : `**To close the day**: What did you get done? Any wins to log, or things to carry into tomorrow?`
 }`
 
   return content
@@ -154,7 +158,7 @@ export function getDueBriefing(): { briefing: Briefing; content: string; missed:
   const primary = overdue[0]
   const missed = overdue.slice(1)
 
-  const content = generateBriefingContent(primary.type, missed.length > 0)
+  const content = generateBriefingContent(primary.type, missed.length)
 
   // Mark missed ones
   for (const m of missed) {

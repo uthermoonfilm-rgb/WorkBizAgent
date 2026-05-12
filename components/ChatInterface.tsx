@@ -79,15 +79,12 @@ export function ChatInterface({ onStateUpdate }: ChatInterfaceProps) {
         if (!res.ok) return
         const data = await res.json()
         if (data.due_briefing) {
-          const { briefing, content, missed } = data.due_briefing
-          const missedNote = missed?.length > 0
-            ? `\n\n_Note: I've combined ${missed.length} missed briefing(s) into this one._`
-            : ''
+          const { briefing, content } = data.due_briefing
 
           const briefingMsg: Message = {
             id: `briefing-${briefing.id}`,
             role: 'assistant',
-            content: content + missedNote,
+            content,
             timestamp: new Date(),
             quickReplies: briefing.type === 'morning'
               ? ["Let's go over my opportunities", "Talk me through my goals", "What should I prioritize today?", "Give me a workout suggestion"]
