@@ -140,6 +140,46 @@
   .card .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
   .tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--bleu); background: var(--bleu-ice); padding: 3px 8px; border-radius: 999px; margin-top: 10px; }
 
+  /* Portrait: any photo gets a blue duotone + grain treatment */
+  .about .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .portrait { position: relative; max-width: 460px; justify-self: center; width: 100%; }
+  .portrait::before {
+    content: ""; position: absolute; inset: 22px -22px -22px 22px;
+    border: 2px solid var(--bleu); border-radius: 24px;
+  }
+  .photo {
+    position: relative; aspect-ratio: 4 / 5; border-radius: 24px; overflow: hidden;
+    background: linear-gradient(160deg, #1e3a8a, var(--navy));
+    box-shadow: 0 40px 80px -30px rgba(11,21,51,.55);
+  }
+  .photo img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: grayscale(1) contrast(1.1) brightness(1.25);
+  }
+  .photo::before {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(180deg, #93c5fd 0%, #3b82f6 55%, #1e3a8a 100%); mix-blend-mode: multiply;
+  }
+  .photo::after {
+    content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: .18; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .photo .glow {
+    position: absolute; z-index: 3; inset: auto -20% -30% -20%; height: 60%; pointer-events: none;
+    background: radial-gradient(closest-side, rgba(147,197,253,.55), transparent); mix-blend-mode: screen;
+  }
+  .photo .stamp {
+    position: absolute; z-index: 4; left: 20px; bottom: 18px; color: var(--white);
+    font-family: Syne, sans-serif; font-weight: 800; font-size: 40px; letter-spacing: -.04em; line-height: .9;
+  }
+  .photo .stamp small { display: block; font: 500 11px Inter, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--bleu-ice); margin-bottom: 6px; }
+  .photo.empty .ph {
+    position: absolute; inset: 0; display: grid; place-items: center; z-index: 0;
+    color: rgba(255,255,255,.7); font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+  }
+  .photo:not(.empty) .ph { display: none; }
+  .about p { color: var(--muted); font-size: 17px; line-height: 1.7; margin-top: 20px; max-width: 460px; }
+
   /* Catalog embeds */
   .catalog { background: var(--off); }
   .embeds { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
@@ -188,6 +228,8 @@
     .hero .wrap { grid-template-columns: 1fr; }
     .feature { max-width: 420px; }
     .embeds { grid-template-columns: 1fr; }
+    .about .wrap { grid-template-columns: 1fr; gap: 56px; }
+    .portrait { max-width: calc(100% - 22px); justify-self: start; }
     nav ul { display: none; }
   }
 </style>
@@ -199,6 +241,7 @@
     <a class="logo" href="#">Thando<span>Bleu</span></a>
     <ul>
       <li><a href="#singles">Singles</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="#catalog">Catalog</a></li>
       <li><a href="#listen">Listen</a></li>
     </ul>
@@ -238,6 +281,29 @@
       <p>Tap any track to play it right here — it keeps playing while you scroll.</p>
     </div>
     <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <div class="wrap">
+    <figure class="portrait">
+      <div class="photo" id="photo">
+        <div class="ph">Photo</div>
+        <!-- Drop his photo next to this file as thandobleu.jpg -->
+        <img src="thandobleu.jpg" alt="ThandoBleu" loading="lazy"
+          onload="this.parentElement.classList.remove('empty')"
+          onerror="this.remove(); document.getElementById('photo').classList.add('empty')">
+        <div class="glow"></div>
+        <div class="stamp"><small>Alt hip hop</small>Thando<br>Bleu</div>
+      </div>
+    </figure>
+    <div>
+      <h2>The <span>artist</span></h2>
+      <p>ThandoBleu makes alternative hip hop for after dark: moody, melodic and soaked in blue. From “Teasing Me” to “Pantheon”, every release pushes the sound further.</p>
+      <div class="cta"><button class="btn btn-primary" style="background:var(--bleu);color:var(--white)" data-play="0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Hear the latest</button></div>
+    </div>
   </div>
 </section>
 
