@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ThandoBleu — Official Site</title>
+<meta name="description" content="ThandoBleu — alternative hip hop. Stream the latest singles: Pantheon, City Nights, Rfa and more.">
+<meta property="og:title" content="ThandoBleu">
+<meta property="og:description" content="Stream the latest singles from ThandoBleu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bleu: #1d4ed8;
+    --bleu-bright: #3b82f6;
+    --bleu-ice: #dbeafe;
+    --navy: #0b1533;
+    --white: #ffffff;
+    --off: #f5f8ff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Inter, system-ui, sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 120px;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+  /* Nav */
+  nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 20;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(11, 21, 51, .55);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { font-family: Syne, sans-serif; font-weight: 800; color: var(--white); font-size: 20px; letter-spacing: -.02em; }
+  .logo span { color: var(--bleu-bright); }
+  nav ul { display: flex; gap: 28px; list-style: none; }
+  nav ul a { color: rgba(255,255,255,.75); font-size: 14px; font-weight: 500; transition: color .2s; }
+  nav ul a:hover { color: var(--white); }
+
+  /* Hero */
+  .hero {
+    position: relative; overflow: hidden; color: var(--white);
+    background: radial-gradient(1200px 600px at 80% -10%, #2563eb 0%, transparent 60%),
+                radial-gradient(900px 500px at -10% 110%, #1e3a8a 0%, transparent 60%),
+                var(--navy);
+    padding: 150px 0 110px;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: auto -10% -60px -10%; height: 120px;
+    background: var(--white); transform: rotate(-2deg);
+  }
+  .hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--bleu-ice); }
+  .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--bleu-bright); box-shadow: 0 0 12px var(--bleu-bright); animation: pulse 2s infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  h1 {
+    font-family: Syne, sans-serif; font-weight: 800; letter-spacing: -.04em; line-height: .9;
+    font-size: clamp(56px, 11vw, 132px); margin: 18px 0 22px;
+  }
+  h1 em { font-style: normal; background: linear-gradient(90deg, #93c5fd, #ffffff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p.lede { color: rgba(255,255,255,.72); font-size: 17px; max-width: 440px; line-height: 1.6; }
+  .cta { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; border: 0; cursor: pointer;
+    font: 600 14px Inter, sans-serif; padding: 14px 22px; border-radius: 999px; transition: transform .15s, background .2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--white); color: var(--navy); }
+  .btn-ghost { background: rgba(255,255,255,.08); color: var(--white); border: 1px solid rgba(255,255,255,.2); }
+
+  .feature {
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 24px; padding: 18px; backdrop-filter: blur(8px);
+  }
+  .feature-art {
+    aspect-ratio: 1; border-radius: 16px; position: relative; overflow: hidden;
+    background: conic-gradient(from 200deg at 60% 40%, #1d4ed8, #93c5fd, #ffffff, #3b82f6, #0b1533, #1d4ed8);
+  }
+  .feature-art::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 30% 70%, transparent 30%, rgba(11,21,51,.55)); }
+  .feature-art .disc {
+    position: absolute; inset: 22%; border-radius: 50%;
+    background: repeating-radial-gradient(circle, #0b1533 0 2px, #111c3f 2px 4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,.4); animation: spin 8s linear infinite; z-index: 1;
+  }
+  .feature-art .disc::after { content: ""; position: absolute; inset: 38%; border-radius: 50%; background: var(--white); border: 6px solid var(--bleu); }
+  .playing .feature-art .disc { animation-duration: 2.4s; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .feature-meta { display: flex; align-items: center; justify-content: space-between; padding: 16px 4px 4px; }
+  .feature-meta small { color: var(--bleu-ice); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+  .feature-meta h3 { font-family: Syne, sans-serif; font-size: 26px; margin-top: 2px; }
+  .play-round {
+    width: 54px; height: 54px; border-radius: 50%; border: 0; cursor: pointer;
+    background: var(--white); color: var(--bleu); display: grid; place-items: center; transition: transform .15s;
+  }
+  .play-round:hover { transform: scale(1.08); }
+
+  /* Sections */
+  section { padding: 90px 0; }
+  .sec-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 36px; flex-wrap: wrap; }
+  h2 { font-family: Syne, sans-serif; font-weight: 800; font-size: clamp(34px, 5vw, 52px); letter-spacing: -.03em; }
+  h2 span { color: var(--bleu); }
+  .sec-head p { color: var(--muted); max-width: 380px; }
+
+  /* Singles grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
+  .card {
+    background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 14px; cursor: pointer; transition: transform .25s, box-shadow .25s, border-color .25s;
+    text-align: left; font: inherit; color: inherit;
+  }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -20px rgba(29,78,216,.35); border-color: var(--bleu-ice); }
+  .card.active { border-color: var(--bleu); box-shadow: 0 0 0 3px var(--bleu-ice); }
+  .art {
+    aspect-ratio: 1; border-radius: 12px; position: relative; overflow: hidden;
+    display: grid; place-items: center; color: var(--white);
+    font-family: Syne, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.05; letter-spacing: -.03em; text-align: center; padding: 18px;
+    overflow-wrap: anywhere;
+  }
+  .art .ov {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    background: rgba(11,21,51,.35); opacity: 0; transition: opacity .2s;
+  }
+  .card:hover .art .ov, .card.active .art .ov { opacity: 1; }
+  .art .ov i { width: 56px; height: 56px; border-radius: 50%; background: var(--white); color: var(--bleu); display: grid; place-items: center; }
+  .card .row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 14px; gap: 8px; }
+  .card h4 { font-size: 16px; font-weight: 600; }
+  .card .yr { font-size: 12px; color: var(--muted); }
+  .card .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--bleu); background: var(--bleu-ice); padding: 3px 8px; border-radius: 999px; margin-top: 10px; }
+
+  /* Catalog embeds */
+  .catalog { background: var(--off); }
+  .embeds { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .embed-box { background: var(--white); border-radius: var(--radius); padding: 14px; border: 1px solid var(--line); }
+  .embed-box h5 { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 4px 4px 12px; }
+  .embed-box iframe { width: 100%; border: 0; border-radius: 12px; display: block; }
+
+  /* Links */
+  .links { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .link {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 20px 22px; border-radius: 14px; border: 1px solid var(--line); font-weight: 600;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .link:hover { background: var(--bleu); color: var(--white); border-color: var(--bleu); }
+  .link small { display: block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link:hover small { color: var(--bleu-ice); }
+  .link svg { flex-shrink: 0; transition: transform .2s; }
+  .link:hover svg { transform: translate(3px, -3px); }
+
+  footer { background: var(--navy); color: rgba(255,255,255,.6); padding: 40px 0; font-size: 13px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  /* Docked player */
+  .dock {
+    position: fixed; left: 50%; bottom: 16px; z-index: 30;
+    width: min(760px, calc(100% - 24px)); transform: translate(-50%, 140%);
+    background: rgba(11,21,51,.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,.12); border-radius: 20px; padding: 10px;
+    box-shadow: 0 30px 80px -20px rgba(11,21,51,.6); transition: transform .45s cubic-bezier(.2,.9,.3,1.2);
+  }
+  .dock.open { transform: translate(-50%, 0); }
+  .dock-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 2px 6px 8px; color: var(--white); }
+  .dock-top b { font-size: 13px; }
+  .dock-top small { color: var(--bleu-ice); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+  .dock-ctrl { display: flex; gap: 6px; align-items: center; }
+  .src {
+    font: 600 11px Inter, sans-serif; padding: 6px 10px; border-radius: 999px; cursor: pointer;
+    border: 1px solid rgba(255,255,255,.2); background: transparent; color: var(--white);
+  }
+  .src.on { background: var(--white); color: var(--navy); }
+  .x { background: none; border: 0; color: rgba(255,255,255,.6); cursor: pointer; font-size: 20px; line-height: 1; padding: 4px 8px; }
+  .dock iframe { width: 100%; border: 0; border-radius: 12px; display: block; }
+
+  @media (max-width: 860px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+    .feature { max-width: 420px; }
+    .embeds { grid-template-columns: 1fr; }
+    nav ul { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#">Thando<span>Bleu</span></a>
+    <ul>
+      <li><a href="#singles">Singles</a></li>
+      <li><a href="#catalog">Catalog</a></li>
+      <li><a href="#listen">Listen</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">New single out now</div>
+      <h1>Thando<br><em>Bleu</em></h1>
+      <p class="lede">Alternative hip hop with late-night blue tones. Hit play on the latest drop, or dig through every single below.</p>
+      <div class="cta">
+        <button class="btn btn-primary" data-play="0">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          Play “Pantheon”
+        </button>
+        <a class="btn btn-ghost" href="https://open.spotify.com/artist/1TbOPDM46i7TyP0Tyl1ncf" target="_blank" rel="noopener">Follow on Spotify</a>
+      </div>
+    </div>
+    <div class="feature" id="feature">
+      <div class="feature-art"><div class="disc"></div></div>
+      <div class="feature-meta">
+        <div><small>Latest single · 2026</small><h3>Pantheon</h3></div>
+        <button class="play-round" data-play="0" aria-label="Play Pantheon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="singles">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Recent <span>singles</span></h2>
+      <p>Tap any track to play it right here — it keeps playing while you scroll.</p>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="catalog" class="catalog">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Full <span>catalog</span></h2>
+      <p>Everything on Spotify and SoundCloud, in one place.</p>
+    </div>
+    <div class="embeds">
+      <div class="embed-box">
+        <h5>Spotify</h5>
+        <iframe src="https://open.spotify.com/embed/artist/1TbOPDM46i7TyP0Tyl1ncf?theme=0" height="452" loading="lazy"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="ThandoBleu on Spotify"></iframe>
+      </div>
+      <div class="embed-box">
+        <h5>SoundCloud</h5>
+        <iframe height="452" loading="lazy" allow="autoplay" title="ThandoBleu on SoundCloud"
+          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/user-692187063&color=%231d4ed8&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&visual=false"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="listen">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Listen &amp; <span>follow</span></h2>
+      <p>Every official ThandoBleu link.</p>
+    </div>
+    <div class="links" id="links"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> ThandoBleu. All rights reserved.</span>
+    <a href="https://beacons.ai/thandobleu" target="_blank" rel="noopener">beacons.ai/thandobleu</a>
+  </div>
+</footer>
+
+<div class="dock" id="dock" role="region" aria-label="Music player">
+  <div class="dock-top">
+    <div><small>Now playing</small><br><b id="dock-title">—</b></div>
+    <div class="dock-ctrl">
+      <div id="dock-srcs" class="dock-ctrl"></div>
+      <button class="x" id="dock-close" aria-label="Close player">×</button>
+    </div>
+  </div>
+  <iframe id="dock-frame" title="Player" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+</div>
+
+<script>
+  // Each release lists every platform we have an embed for; the first one is the default.
+  const TRACKS = [
+    { title: "Pantheon", year: 2026, sub: "Single", tag: "New",
+      sources: { apple: "https://embed.music.apple.com/us/song/pantheon/1872284492",
+                 spotify: "https://open.spotify.com/embed/track/6mVS1L5b0W9FkUZ2qMwW56" },
+      art: ["#1d4ed8", "#93c5fd"] },
+    { title: "City Nights", year: 2025, sub: "Single",
+      sources: { spotify: "https://open.spotify.com/embed/track/6gwXwxhoZynMBXfoQtTzAg",
+                 apple: "https://embed.music.apple.com/za/album/city-nights-single/1803094929?i=1803094930" },
+      art: ["#0b1533", "#3b82f6"] },
+    { title: "Rfa", year: 2024, sub: "Single",
+      sources: { apple: "https://embed.music.apple.com/us/song/rfa/1738048416" },
+      art: ["#60a5fa", "#ffffff"] },
+    { title: "Please Don't Go", year: 2023, sub: "with FarrellB",
+      sources: { apple: "https://embed.music.apple.com/gb/album/please-dont-go-single/1698272485?i=1698272486",
+                 soundcloud: "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/imfarrellb/farrellb-thandobleu-please-dont-go&color=%231d4ed8&auto_play=true&visual=false" },
+      art: ["#1e3a8a", "#bfdbfe"] },
+    { title: "Sex Talking (Slowed)", year: 2023, sub: "Single",
+      sources: { spotify: "https://open.spotify.com/embed/track/7dMbjcQPvsprQCyos9QhwP" },
+      art: ["#172554", "#2563eb"] },
+    { title: "T'D UP", year: 2022, sub: "Single",
+      sources: { spotify: "https://open.spotify.com/embed/album/2pOO8lca7BIc1Af9v89M5i" },
+      art: ["#2563eb", "#e0f2fe"] },
+    { title: "Too Fast", year: 2022, sub: "sosocamo feat. ThandoBleu",
+      sources: { spotify: "https://open.spotify.com/embed/track/3uPzjswucgPB0tl3i8sL5Q",
+                 soundcloud: "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/sosocamo/too-fast-feat-thandobleu&color=%231d4ed8&auto_play=true&visual=false" },
+      art: ["#0f172a", "#60a5fa"] },
+    { title: "Teasing Me", year: 2021, sub: "Single",
+      sources: { spotify: "https://open.spotify.com/embed/album/3bln7sKiyeSfeQxVwficGh" },
+      art: ["#3b82f6", "#1e1b4b"] },
+  ];
+
+  const LINKS = [
+    { name: "Spotify", note: "Artist profile", url: "https://open.spotify.com/artist/1TbOPDM46i7TyP0Tyl1ncf" },
+    { name: "Apple Music", note: "Pantheon & more", url: "https://music.apple.com/us/song/pantheon/1872284492" },
+    { name: "SoundCloud", note: "All uploads", url: "https://soundcloud.com/user-692187063" },
+    { name: "YouTube", note: "@ThandoBleu", url: "https://www.youtube.com/@Thandobleu" },
+    { name: "Instagram", note: "@thandobleu", url: "https://www.instagram.com/thandobleu" },
+    { name: "TikTok", note: "@thandobleu", url: "https://www.tiktok.com/@thandobleu" },
+    { name: "All links", note: "beacons.ai", url: "https://beacons.ai/thandobleu" },
+  ];
+
+  const SRC_LABEL = { spotify: "Spotify", apple: "Apple", soundcloud: "SoundCloud" };
+  const SRC_HEIGHT = { spotify: 80, apple: 175, soundcloud: 120 };
+  const PLAY_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  const ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg>';
+
+  const grid = document.getElementById("grid");
+  grid.innerHTML = TRACKS.map((t, i) => `
+    <button class="card" data-play="${i}" aria-label="Play ${t.title}">
+      <div class="art" style="background:linear-gradient(135deg, ${t.art[0]}, ${t.art[1]})">
+        ${t.title}
+        <div class="ov"><i>${PLAY_ICON}</i></div>
+      </div>
+      <div class="row"><h4>${t.title}</h4><span class="yr">${t.year}</span></div>
+      <div class="sub">${t.sub}</div>
+      ${t.tag ? `<span class="tag">${t.tag}</span>` : ""}
+    </button>`).join("");
+
+  document.getElementById("links").innerHTML = LINKS.map(l => `
+    <a class="link" href="${l.url}" target="_blank" rel="noopener">
+      <span>${l.name}<small>${l.note}</small></span>${ARROW}
+    </a>`).join("");
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  const dock = document.getElementById("dock");
+  const frame = document.getElementById("dock-frame");
+  const srcs = document.getElementById("dock-srcs");
+  let current = null;
+
+  function load(i, src) {
+    const t = TRACKS[i];
+    src = src || Object.keys(t.sources)[0];
+    current = i;
+    frame.src = t.sources[src];
+    frame.height = SRC_HEIGHT[src];
+    document.getElementById("dock-title").textContent = t.title;
+    srcs.innerHTML = Object.keys(t.sources).length > 1
+      ? Object.keys(t.sources).map(s => `<button class="src ${s === src ? "on" : ""}" data-src="${s}">${SRC_LABEL[s]}</button>`).join("")
+      : "";
+    document.querySelectorAll(".card").forEach((c, j) => c.classList.toggle("active", j === i));
+    document.getElementById("feature").classList.toggle("playing", i === 0);
+    dock.classList.add("open");
+  }
+
+  document.addEventListener("click", e => {
+    const p = e.target.closest("[data-play]");
+    if (p) return load(+p.dataset.play);
+    const s = e.target.closest("[data-src]");
+    if (s) return load(current, s.dataset.src);
+  });
+
+  document.getElementById("dock-close").addEventListener("click", () => {
+    dock.classList.remove("open");
+    frame.src = "about:blank";
+    document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+    document.getElementById("feature").classList.remove("playing");
+  });
+</script>
+</body>
+</html>
